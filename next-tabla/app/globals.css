@@ -25,3 +25,32 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+.home{
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  padding-bottom: 3rem;
+  background-color: white;
+}
+
+.header-table{
+  background-color: #F4DAFDED;
+  height: 10rem;
+  margin-bottom: 3rem;
+}
+
+.tittle-report{
+  font-family: 'Inter';
+  color: #F98317;
+  font-size: 50px;
+  font-weight: bold;
+}
+
+.tittle-table{
+  font-family: 'Inter';
+  color: #BD6ED9;
+  font-size: 30px;
+}
