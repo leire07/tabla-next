@@ -1,10 +1,9 @@
 import React from "react";
 import { Document, Page, View, Text, StyleSheet} from '@react-pdf/renderer';
 import {data, columns, columns_select} from "../data"
-import JSZip from 'jszip';
 
 
-interface CrearPDFProps {
+interface CreatePDFProps {
   id: number;
   option: number;
 }
@@ -38,7 +37,7 @@ const getFileNameWithoutExtension = (filename: string) => {
 
 /* URL with all the information of the components: https://react-pdf.org/components#view */
 /* Case 1 will be the pdf for the detailed report and case 2 for the summary report */ 
-export const CrearPDF = ({ id, option }: CrearPDFProps) => {
+export const CreatePDF = ({ id, option }: CreatePDFProps) => {
   const filteredData = data.filter(item => item.key === id);
   console.log("El documento es:" + Document)
 
@@ -50,7 +49,7 @@ export const CrearPDF = ({ id, option }: CrearPDFProps) => {
         {/* Mapeo de datos fuera del bloque View */}
         {filteredData.map((item) => (
           <View key={item.key} style={style_pdf.section}>
-            <Text>Patient: {getFileNameWithoutExtension(item.name)}</Text>
+            <Text>Detailed report from patient: {getFileNameWithoutExtension(item.name)}</Text>
             <Text style={style_pdf.cell}>
               <Text style={style_pdf.row}>
               Name: {" "}
@@ -89,7 +88,7 @@ export const CrearPDF = ({ id, option }: CrearPDFProps) => {
         {/* Mapeo de datos fuera del bloque View */}
         {filteredData.map((item) => (
           <View key={item.key} style={style_pdf.section}>
-            <Text>Patient: {getFileNameWithoutExtension(item.name)}</Text>
+            <Text>Summary report from patient: {getFileNameWithoutExtension(item.name)}</Text>
             <Text style={style_pdf.cell}>
               <Text style={style_pdf.row}>
               Name: {" "}

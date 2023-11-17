@@ -28,14 +28,13 @@ import { PDFDownloadLink} from '@react-pdf/renderer';
 import {CircularProgress} from "@nextui-org/react";
 import {BiMenuAltLeft} from "react-icons/bi";
 import { PDFViewer} from '@react-pdf/renderer';
-import { CrearPDF } from './drag_and_drop/renderPdf';
-import {HandleZip} from "./drag_and_drop/createPdf";
+import { CreatePDF } from './drag_and_drop/renderPdf';
+import {HandleZip} from "./drag_and_drop/createZip";
 
 type User = typeof data[0];
 
 
 export default function App() {
-
 
   const [page, setPage] = React.useState(1);
   const [filterValue, setFilterValue] = React.useState("");
@@ -48,8 +47,10 @@ export default function App() {
   const [dateStart, setDateStart] = React.useState<Date | null>(null);
   const [dateEnd, setDateEnd] = React.useState<Date | null>(null);
   */
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [identificador, setId] = useState<number | null>(null);
+  const [isModalOpenPdf, setIsModalOpenPdf] = useState(false);
+  const [isModalOpenDownload, setIsModalOpenDownload] = useState(false);
+  const [isModalOpenAssembly, setIsModalOpenAssembly] = useState(false);
+  const [identifier, setId] = useState<number | null>(null);
   const arrayIdentifiersRef = React.useRef<number[]>([]);
   const [optionButton, setOptionButton] = useState<number | null>(null);
   const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
@@ -211,13 +212,13 @@ export default function App() {
             isIconOnly
             isDisabled={requiresUserValidation || regenerating}
             className="my-button"
-            onClick={() => {setIsModalOpen(true); setId(item.key); setOptionButton(1)}}>
+            onClick={() => {setIsModalOpenPdf(true); setId(item.key); setOptionButton(1)}}>
           <AiOutlineEye size="1.5rem"/>
           </Button>
           </Tooltip>
           {/* Esto inhabilita la descarga del PDF si is_regenerating y validation son true */}
           {!regenerating && !requiresUserValidation ? (
-              <PDFDownloadLink document={<CrearPDF id={item.key} option={1} />} fileName="documento.pdf">
+              <PDFDownloadLink document={<CreatePDF id={item.key} option={1} />} fileName="documento.pdf">
               <Tooltip content="Descargar" style={{ color: 'orange'}} isDisabled={requiresUserValidation || regenerating}>
                 <Button 
                   isIconOnly
@@ -248,13 +249,13 @@ export default function App() {
             isIconOnly
             isDisabled={requiresUserValidation || regenerating}
             className="my-button"
-            onClick={() => {setIsModalOpen(true); setId(item.key); setOptionButton(1)}}>
+            onClick={() => {setIsModalOpenPdf(true); setId(item.key); setOptionButton(2)}}>
           <AiOutlineEye size="1.5rem"/>
           </Button>
           </Tooltip>
           {/* Esto inhabilita la descarga del PDF si is_regenerating y validation son true */}
           {!regenerating && !requiresUserValidation ? (
-              <PDFDownloadLink document={<CrearPDF id={item.key} option={2} />} fileName="documento.pdf">
+              <PDFDownloadLink document={<CreatePDF id={item.key} option={2} />} fileName="documento.pdf">
               <Tooltip content="Descargar" style={{ color: 'orange'}} isDisabled={requiresUserValidation || regenerating}>
                 <Button 
                   isIconOnly
@@ -280,7 +281,7 @@ export default function App() {
             if (regenerating == true){
               return(
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                <CircularProgress aria-label="Loading..."/>
+                <CircularProgress color="primary" aria-label="Loading..."/>
                 </div>
               );
               }else if (requiresUserValidation == false){
@@ -311,7 +312,7 @@ export default function App() {
                 <div>
             <Tooltip content="Validar" style={{color: 'orange'}}>
             <Button 
-            className="my-button" onClick={() => (console.log("validar"))}>
+            className="my-button" onClick={() => setIsModalOpenAssembly(true)}>
               Assembly
             </Button>
             </Tooltip>
@@ -346,9 +347,9 @@ export default function App() {
                   </div>
                   <div className="w-2/4 h-full">
                 <Select
-                  style={{backgroundColor:"transparent"}}
+                  style={{backgroundColor:"transparent", width:"15rem"}}
                   /* label="Ordenar por:" */
-                  placeholder="Selecciona una opción"
+                  placeholder="Filter by..."
                   startContent={<BiMenuAltLeft color="#F17F16"/>}
                   className="max-w-xs select-box"
                   selectedKeys={Array.from(selectValue)}
@@ -367,7 +368,7 @@ export default function App() {
                 }
               }>
               <Button isDisabled={selectedKeys.size === 0}
-              className="my-button-all" onClick={() => {HandleZip(arrayIdentifiersRef.current)}}
+              className="my-button-all" onClick={() => {/*HandleZip(arrayIdentifiersRef.current*/ setIsModalOpenDownload(true)}}
               isIconOnly>
               <PiArrowDownFill size="1.5rem"/>
               </Button>
@@ -395,7 +396,7 @@ export default function App() {
          <Pagination
               isCompact
               showControls
-              color="secondary"
+              color="primary"
               page={page}
               total={pages}
               onChange={(page) => setPage(page)}
@@ -441,13 +442,38 @@ export default function App() {
         )}
       </TableBody>
     </Table>
-    {isModalOpen && identificador !== null && optionButton !== null && (
+    {isModalOpenPdf && identifier !== null && optionButton !== null && (
             <div className="modal">
               <div className="modal-content">
                 <PDFViewer style={{ width: "100%", height: "90vh" }}>
-                  <CrearPDF id={identificador} option={optionButton} />
+                  <CreatePDF id={identifier} option={optionButton} />
                 </PDFViewer>
-                <Button onClick={() => setIsModalOpen(false)}>Close PDF</Button>
+                <Button onClick={() => setIsModalOpenPdf(false)}>Close PDF</Button>
+              </div>
+            </div>
+          )}
+          {isModalOpenDownload &&(
+            <div className="modal">
+              <div className="modal-content-download">
+                <h1 className="tittle-modal-download">Select the type of the report</h1>
+                <div className="modal-download-box">
+                <Button className="button-modal-download" onClick={() => {HandleZip(arrayIdentifiersRef.current, 1)}}>Download  detailed report</Button>
+                <Button className="button-modal-download" onClick={() => {HandleZip(arrayIdentifiersRef.current, 2)}}>Download summary report</Button>
+                <Button className="button-modal-download" onClick={()=> setIsModalOpenDownload(false)}>Close</Button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {isModalOpenAssembly &&(
+            <div className="modal">
+              <div className="modal-content-download">
+                <h1 className="tittle-modal-download">Assembly</h1>
+                <div className="modal-download-box">
+                <Button className="button-modal-download">Opción 1</Button>
+                <Button className="button-modal-download">Opción 2</Button>
+                <Button className="button-modal-download" onClick={()=> setIsModalOpenAssembly(false)}>Close</Button>
+                </div>
               </div>
             </div>
           )}

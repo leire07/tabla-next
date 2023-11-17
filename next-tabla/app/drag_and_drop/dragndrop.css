@@ -1,0 +1,54 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('inter-ui/Inter.css');
+
+
+:root {
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 0, 0, 0;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --foreground-rgb: 0, 0, 0;
+    --background-start-rgb: 255, 255, 255;
+    --background-end-rgb: 255, 255, 255;
+    --color-botones: #F98317;
+    --color-botones-hover: #F17F16;     
+    --fondo-tabla: #F4DAFD54;
+    --borde-tabla: #EAC0F9;
+    --principal-purple: #BD6ED9
+  }
+}
+
+.dragndrop{
+    display: flex;
+    flex-direction: row; /* Cambia esto */
+    justify-content:space-around;
+    border: 2px solid #D9D9D9;
+    border-radius: 1rem;
+    align-items: center;
+    text-align: center;
+    height: 6rem;
+  
+  }
+
+
+  .dragndrop-text{
+    font-size: 22px;
+  }
+  
+  .dragndrop-text2{
+    color: #000000;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 0.6rem;
+    margin: 0;
+    padding: 0;
+    vertical-align: middle;
+    margin-left: 0.5rem;
+  }
+

@@ -3,14 +3,15 @@ import {Button} from "@nextui-org/react";
 import { useDropzone } from "react-dropzone";
 import {FaFileArrowUp} from 'react-icons//fa6';
 import {IoAddCircleSharp} from 'react-icons/io5';
+import "./dragndrop.css";
 
 /* The code defines a functional component called `DragnDrop` that takes a prop `setFiles` of type
 `Dispatch<any>`. */
 const DragnDrop:FunctionComponent<{setFiles:Dispatch<any>}> = ({setFiles}) => {
 
     const onDrop = useCallback(
-    (acceptedFiles) => {
-    setFiles(prevFiles => [...prevFiles, ...acceptedFiles]);
+    (acceptedFiles: File[]) => {
+    setFiles((prevFiles: File[]) => [...prevFiles, ...acceptedFiles]);
     },[setFiles]);
 
 
@@ -27,7 +28,7 @@ const DragnDrop:FunctionComponent<{setFiles:Dispatch<any>}> = ({setFiles}) => {
       <div {...getRootProps()} className="w-full h-80 dragndrop-container cursor-pointer focus:outline-none">
         <input {...getInputProps()} />
         <div className= {"dragndrop"}>
-            <p>Upload VCF file</p>
+            <p className="dragndrop-text">Upload VCF file</p>
             {
                 isDragReject ? <p>Sorry, this application does not support this file.</p>:
                 <div style={
@@ -40,7 +41,7 @@ const DragnDrop:FunctionComponent<{setFiles:Dispatch<any>}> = ({setFiles}) => {
                 
                 }>
                     <FaFileArrowUp/>
-                    <p className="dragndrop-text">Drag & Drop or click to select files</p>
+                    <p className="dragndrop-text2">Drag & Drop or click to select files</p>
                 </div>
             }
             <div>
