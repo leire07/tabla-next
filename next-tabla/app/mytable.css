@@ -242,8 +242,8 @@
   }
 
   .button-modal-download{
-    background-color: var(--color-botones);
-    color: white;
+    background-color: var(--color-botones) !important;
+    color: white !important;
   }
 
   .button-modal-download:hover{
